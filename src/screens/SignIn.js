@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Text, TextInput, View, StatusBar, StyleSheet, TouchableOpacity,} from "react-native";
+import { Text, TextInput, View, StatusBar, StyleSheet, TouchableOpacity, } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import MyButton from "../components/MyButton";
 import { useNavigation } from "@react-navigation/native";
@@ -18,13 +18,13 @@ export default function SignIn() {
       <View style={{ gap: 16 }}>
         <View style={style.inputBox}>
           <Feather name="mail" size={24} color="#8a8787" />
-          <TextInput style={style.input} placeholder="Digite seu email" placeholderTextColor="#8a8787" keyboardType="email-address"/>
+          <TextInput style={style.input} placeholder="Digite seu email" placeholderTextColor="#8a8787" keyboardType="email-address" />
         </View>
         <View style={style.inputBox}>
           <Feather name="lock" size={24} color="#8a8787" />
-          <TextInput style={style.input} placeholder="Digite sua senha" placeholderTextColor="#8a8787" secureTextEntry/>
+          <TextInput style={style.input} placeholder="Digite sua senha" placeholderTextColor="#8a8787" secureTextEntry />
         </View>
-        <MyButton text="Login" style={{width: "100%" }}/>
+        <MyButton text="Login" style={{ width: "100%" }} />
       </View>
     </View>
   );
