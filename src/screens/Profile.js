@@ -6,6 +6,7 @@ import MyButton from "../components/MyButton";
 import { api } from "../services/api";
 import UserPhoto from "../assets/user.png";
 import * as ImagePicker from "expo-image-picker";
+import Cabecario from "../assets/cabecario.png"
 
 export default function Profile() {
   const [error, setError] = useState("");
@@ -141,20 +142,14 @@ export default function Profile() {
     fetchUserProfile();
   }, []);
 
+
   return (
-    <ScrollView contentContainerStyle={style.container}>
-      <View style={{ backgroundColor: "#1B1B1F", alignItems: "center" }}>
-        <View style={style.header}>
-          <TouchableOpacity onPress={() => setEditable(true)}>
-            <MaterialCommunityIcons name="pencil" size={28} color="#fff" />
-          </TouchableOpacity>
-          <Text style={{ fontSize: 28, fontWeight: "600", color: "#ffffff" }}>
-            Perfil
-          </Text>
-          <TouchableOpacity onPress={() => signOut()}>
-            <MaterialCommunityIcons name="logout" size={28} color="#fff" />
-          </TouchableOpacity>
-        </View>
+    <ScrollView style={style.container}>
+      <View>
+        <Image source={Cabecario} style={style.image}/>
+        <TouchableOpacity onPress={() => signOut()}>
+          <MaterialCommunityIcons name="logout" size={28} color="#fff" style={{marginLeft:10, marginTop: 5}}/>
+        </TouchableOpacity>
         {<View style={style.profileImageContainer}>
           <Image
             key={photoUrl}
@@ -184,14 +179,6 @@ export default function Profile() {
             width: "100%",
           }}
         >
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "400",
-            }}
-          >
-            Meus Dados
-          </Text>
           <View style={style.inputBox}>
             <Feather name="user" size={24} color="#8a8787" />
             <TextInput
@@ -211,7 +198,9 @@ export default function Profile() {
               onChangeText={(text) => setEmail(text)}
               placeholderTextColor="#AEAEB3"
             />
+
           </View>
+          
           <View>
             {editable && (
               <View style={style.inputBox}>
@@ -229,14 +218,16 @@ export default function Profile() {
                 />
               </View>
             )}
+            <MyButton onPress={() => setEditable(true)} style={{backgroundColor:"#002D62", width: 100,
+    height: 55, borderRadius: 12,borderWidth: 1, borderColor: "#FFFFFF", marginTop:15, marginLeft:140 }}text="Editar"/>
 
             <Text style={style.error}>{error}</Text>
           </View>
         </View>
         {editable && (
           <View style={{ gap: 8, marginTop: 16, flexDirection: "row" }}>
-            <MyButton onPress={() => setEditable(false)} style={{ flex: 1 }} text="Cancelar" />
-            <MyButton onPress={() => handleSubmit() } style={{ flex: 1 }} text="Salvar alterações" />
+            <MyButton onPress={() => setEditable(false)} style={{ flex: 1, backgroundColor:"#002D62", borderRadius: 12,  borderColor: "#FFFFFF" }} text="Cancelar" />
+            <MyButton onPress={() => handleSubmit() } style={{ flex: 1, backgroundColor:"#002D62", borderRadius: 12,  borderColor: "#FFFFFF"}} text="Salvar alterações" />
           </View>
         )}
 
@@ -247,17 +238,8 @@ export default function Profile() {
 
 const style = StyleSheet.create({
   container: {
-    alignItems: "flex-start",
-  },
-  header: {
-    backgroundColor: "#1B1B1F",
-    width: "100%",
-    padding: 12,
-    height: 100,
-    gap: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    backgroundColor:"#52A4DC"
+    
   },
   profileImageContainer: {
     alignItems: "center",
@@ -270,7 +252,7 @@ const style = StyleSheet.create({
     height: 200,
     borderRadius: 100,
     borderWidth: 6,
-    borderColor: "#DC1637",
+    borderColor: "#002D62",
   },
   username: {
     alignSelf: "center",
@@ -280,24 +262,27 @@ const style = StyleSheet.create({
     marginBottom: 8,
     fontSize: 40,
     fontWeight: "600",
+    color:"#002D62"
   },
   cameraButton: {
     position: "absolute",
     bottom: 10,
     right: 10,
-    backgroundColor: "#DC1637",
+    backgroundColor: "#002D62",
     padding: 8,
-    borderRadius: 100,
+    borderRadius: 80,
+    marginRight:100
   },
   inputBox: {
     flexDirection: "row",
-    alignItems: "center",
     gap: 16,
     padding: 16,
-    borderWidth: 1,
-    borderColor: "#8a8787",
-    borderRadius: 4,
-    width: "100%",
+    backgroundColor:"#9bc0da",
+    borderRadius: 12,
+    width: 350,
+    height: 55,
+    marginLeft:15
+   
   },
 
   input: {
@@ -305,9 +290,17 @@ const style = StyleSheet.create({
     fontSize: 18,
   },
   error: {
-    color: "#DC1637",
+    color: "#121212",
     fontWeight: "400",
     textAlign: "center",
     marginTop: 8,
   },
+  image: {
+    width: "100%",
+    height:68
+  },
+
+  button:{
+    
+  }
 });

@@ -1,57 +1,55 @@
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image, StatusBar, TextInput, Alert } from "react-native";
 import { useAuth } from "../context/useAuth";
-import Cabecario from "../assets/cabecario.png"
-import { useCallback, useEffect, useState } from "react";
-import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import Categories from "../components/Categories";
+import Cabecario from "../assets/cabecario.png";
+import { useState, useEffect, useCallback } from "react";
+import { AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { api } from '../services/api';
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import CategoriaImagem from '../assets/curativo.png'
 
 export default function Home() {
-    const { signOut } = useAuth()
-    const [query, SetQuery] = useState("");
+    const { signOut } = useAuth();
     const navigation = useNavigation();
-    const [productData, setProductData] = useState([]);
-
-    const filteredProducts = query ?
-        productData.filter((item) => item.name.toLowerCase().includes(query.toLowerCase()))
-        : productData
+    const [query, SetQuery] = useState("");
+    const [categorieData, setCategorieData] = useState([]);
 
     async function Delete(id) {
         try {
-            await api.delete(`products/${id}`);
-            Alert.alert("Produto Deletado");
+            await api.delete(`categories/${id}`);
+            Alert.alert("Categoria Deletada");
             // Atualiza a lista de produtos após a exclusão
-            const updatedProducts = productData.filter((item) => item.id !== id);
-            setProductData(updatedProducts);
+            const updatedProducts = categorieData.filter((item) => item.id !== id);
+            setCategorieData(updatedProducts);
         } catch (error) {
             console.log(error);
             Alert.alert("Erro ao deletar o produto");
         }
     }
 
-    const fetchProducts = useCallback(async () => {
+    const filteredCategories = query ?
+        categorieData.filter((item) => item.name.toLowerCase().includes(query.toLowerCase()))
+        : categorieData
+
+    const fetchCategories = useCallback(async () => {
         try {
-            const response = await api.get("products");
-            setProductData(response.data);
+            const response = await api.get("categories");
+            setCategorieData(response.data);
         } catch (error) {
             console.log(error);
         }
     }, []);
 
     useEffect(() => {
-        fetchProducts();
-    }, [fetchProducts]);
+        fetchCategories();
+    }, [fetchCategories]);
 
     useFocusEffect(
         useCallback(() => {
-            fetchProducts();
-        }, [fetchProducts])
+            fetchCategories();
+        }, [fetchCategories])
     );
 
-    console.log(productData);
+    console.log(categorieData);
     return (
         <ScrollView style={style.container}>
             <View>
@@ -65,35 +63,20 @@ export default function Home() {
                 value={query}
                 onChangeText={(text) => SetQuery(text)}
             />
-            <TouchableOpacity onPress={() => navigation.navigate("CadastroP")}>
+            <TouchableOpacity onPress={() => navigation.navigate("CadastroC")}>
                 <AntDesign name="plus" size={24} style={style.adicionar} />
             </TouchableOpacity>
 
             <View style={style.produtos}>
 
-                {filteredProducts.map((item) => (
+                {filteredCategories.map((item) => (
                     <View key={item.id} style={style.produto}>
-
+                        <Image style={{ width: 90, height: 90, borderRadius: 50}} source={CategoriaImagem} />
                         <View>
-                            <Text style={{
-                                fontWeight: 900, color: "#ffffff",
-                                fontSize: 20,
-                                padding: 5,
-                            }}>{item.name}</Text>
-                            <Text style={{
-                                fontWeight: 900, color: "#ffffff",
-                                fontSize: 20,
-                                padding: 5,
-                            }}>Quantidade:<Text style={{fontWeight:400}}> {item.amount}</Text></Text>
-                            {item.category && <Text style={{
-                                fontWeight: 900, color: "#ffffff",
-                                fontSize: 20,
-                                padding: 5,
-                            }}>Categoria:<Text style={{fontWeight:400}}> {item.category.name}</Text></Text>}
-
+                            <Text style={style.nome}>{item.name}</Text>
                         </View>
                         <View>
-                            <TouchableOpacity onPress={() => navigation.navigate('ProdutoE', item)}>
+                            <TouchableOpacity onPress={() => navigation.navigate('CategoriaE', item)}>
                                 <MaterialCommunityIcons name="lead-pencil" size={24} style={style.pincel} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => Delete(item.id)}>
@@ -106,8 +89,7 @@ export default function Home() {
 
             </View>
         </ScrollView>
-
-    )
+    );
 }
 
 const style = StyleSheet.create({
@@ -160,7 +142,7 @@ const style = StyleSheet.create({
     nome: {
         color: "#ffffff",
         fontSize: 20,
-        padding: 5,
+        marginTop: 27,
     },
     pincel: {
         color: "#ffffff",
